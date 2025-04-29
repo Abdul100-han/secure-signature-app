@@ -107,12 +107,12 @@ exports.setupMFA = async (req, res) => {
     const user = await User.findById(req.user.id);
     
     // Generate MFA secret
-    const secret = speakeasy.generateSecret({
+    const  secret = speakeasy.generateSecret({
       name: `SecureSign:${user.email}`
     });
     
     // Generate QR code
-    qrcode.toDataURL(secret.otpauth_url, (err, imageUrl) => {
+    qrcode.toDataURL(secret.otpauth_url, async (err, imageUrl) => {
       if (err) {
         console.error(err);
         return res.status(500).send('Error generating QR code');
